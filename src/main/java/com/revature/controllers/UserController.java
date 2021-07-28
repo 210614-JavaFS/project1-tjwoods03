@@ -16,7 +16,7 @@ public class UserController {
 
 	private static UserDAO userDao = new UserDAOImpl();
 	
-	public int login(User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static int login(User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
 		user = userDao.findByUsersName(user.getUserName());
 		
@@ -29,7 +29,7 @@ public class UserController {
 	
 	
 	//Implementing PBKDF2 to encrypt the password
-	public String encryptPass(String pass) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static String encryptPass(String pass) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
 		User user = new User();
 		pass = user.getPass();

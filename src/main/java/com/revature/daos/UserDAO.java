@@ -13,6 +13,8 @@ public interface UserDAO {
 	boolean updateUser(User user);
 
 	boolean addUser(User user);
+	
+	int checkValidAccount(User user);
 
 	
 }

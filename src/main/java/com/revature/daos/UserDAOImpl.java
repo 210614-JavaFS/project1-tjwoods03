@@ -26,7 +26,7 @@ public class UserDAOImpl implements UserDAO {
 			
 			while(result.next()) {
 				User user = new User();
-				user.setUserID(result.getInt("ers_user_id"));
+				
 				user.setUserName(result.getString("ers_username"));
 				user.setPass(result.getString("ers_password"));
 				user.setFirstName(result.getString("user_first_name"));
@@ -123,6 +123,32 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public int checkValidAccount(User user) {
+		
+		try {
+			Connection connect = ConnectionUtil.getConnection();
+			Statement statement = connect.createStatement();
+			String username = user.getUserName();
+			String pass = user.getPass();
+			ResultSet result = statement.executeQuery("SELECT user_role_id FROM ers_users WHERE ers_username = '" + username+ "' AND ers_password = '" + pass + "';");
+			
+			int index = 0;
+			if(result.next()) {
+				username = user.getUserName();
+				pass = user.getPass();
+				index = result.getInt(1);
+			}
+			return index;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+		
 	}
 
 }

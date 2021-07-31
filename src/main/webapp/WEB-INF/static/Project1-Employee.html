@@ -14,13 +14,65 @@
             <p>What would you like to do?</p>
         </div>
         <div>
-            <label>View Previous Reimbursments:</label>
-            <button id="view" onclick="viewFunction()">View</button>
+            <button id="viewPrevious" class="btn btn-dark">View Previous Reimbursments</button>
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-sm-1">Reimbursement ID</th>
+                    <th class="col-sm-1">Reimbursement Amount</th>
+                    <th class="col-sm-1">Date Submitted</th>
+                    <th class="col-sm-1">Date Resolved</th>
+                    <th class="col-sm-4">Reimbursement Description</th>
+                    <th class="col-sm-1">Reimbursement Author</th>
+                    <th class="col-sm-1">Reimbursement Resolver</th>
+                    <th class="col-sm-1">Reimbursement Status</th>
+                    <th class="col-sm-1">Reimbursement Type</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+
+
+            </tbody>
+        </table>
+        <p>Reimbursement Key:</p>
+        <p>Status: "1" = PENDING        "2" = APPROVED          "3" = DENIED</p>
+        <p>Type: "1" = LODGING      "2" = TRAVEL     "3" = MEDICAL    "4" = BUSINESS     "5" = OTHER </p>
+        <br>
+        <br>
         <div>
-            <label>Add Reimbursments:</label>
-            <button id="add" onclick="addFuntion()">Add</button>
+            <h5>Submit a Reimbursement:</h3>
         </div>
+        <form class="form-group">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div>
+                <label for="amount">Reimbursement Amount($):</label>
+                <input type="text" id="amount" name="amount">
+            </div>
+            <div>
+                <label for="type">Reimbursement Type:</label>
+                <select name="type" id="type">
+                    <option value="lodging">Lodging</option>
+                    <option value="travel">Travel</option>
+                    <option value="medical">Medical</option>
+                    <option value="business">Business</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <br>
+                <input type="text" id="description" name="description" size="50">
+            </div>
+            <div>
+                <label for="receipt">Receipt:</label>
+                <input type="file" id="receipt" name="receipt">
+            </div>
+          </form>
+          <button class="btn btn-primary" id="submitReimbursement">Submit A Reimbursement</button>
     </div>
 </body>
 </html>

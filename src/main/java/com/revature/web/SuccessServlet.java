@@ -1,27 +1,53 @@
-package com.revature.web;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class SuccessServlet extends HttpServlet{
-
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException{
-		//This is a flag to the browser about what format the response body is in.
-		response.setContentType("text/html");
-		
-		PrintWriter printWriter = response.getWriter();
-		
-		String username = request.getParameter("userId");
-		
-		printWriter.print("<h2> Welcome "+username+", you successfully logged in!</h2>");
-		printWriter.print("<a href='logout'>Click here to logout!</a>");
-	}
-	
-}
+//package com.revature.web;
+//
+//import java.io.IOException;
+//import java.io.PrintWriter;
+//
+//import javax.servlet.RequestDispatcher;
+//import javax.servlet.ServletException;
+//import javax.servlet.http.HttpServlet;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpSession;
+//
+//import com.revature.models.User;
+//
+//public class SuccessServlet extends HttpServlet{
+//
+//	@Override
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		HttpSession session = request.getSession(false);
+//		response.setContentType("text/html");
+//		PrintWriter pw = response.getWriter();
+//		
+//		if(session != null) {
+//			new LogoutServlet().doGet(request, response);
+//			String username = request.getParameter("username");
+//			session.setAttribute("username", username);
+//			
+//			doPost(request, response);
+//		}else {
+//			response.sendRedirect("/static/Project1-Employee.html");
+//		}
+//	}
+//	
+//	@Override
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+//			throws ServletException, IOException{
+//		HttpSession session = request.getSession(false);
+//		response.setContentType("text/html");
+//		
+//		String username = request.getParameter("username");
+//		
+//		RequestDispatcher requestDispatcher = null;
+//		PrintWriter printWriter = response.getWriter();
+//		User user = new User();
+//		
+//		if(user.getUserRoleID() == 1) {
+//			session.setAttribute("username", username);
+//			requestDispatcher = request.getRequestDispatcher("/static");
+//			requestDispatcher.forward(request, response);
+//		}
+//	}
+//	
+//}

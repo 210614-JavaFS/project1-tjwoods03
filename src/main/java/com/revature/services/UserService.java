@@ -22,4 +22,8 @@ public class UserService {
 		return userDao.addUser(user);
 	}
 	
+	public int login(User user) {
+		return userDao.checkValidAccount(user);
+	}
+	
 }

@@ -14,12 +14,38 @@
             <p>What would you like to do?</p>
         </div>
         <div>
-            <label>View Pending Reimbursment Submissions:</label>
-            <button id="view" onclick="viewPendingFunction()">View</button>
+            <button id="viewPending" class="btn btn-primary" >View Pending Reimbursements</button>
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-sm-1">Reimbursement ID</th>
+                    <th class="col-sm-1">Reimbursement Amount</th>
+                    <th class="col-sm-1">Date Submitted</th>
+                    <th class="col-sm-1">Date Resolved</th>
+                    <th class="col-sm-4">Reimbursement Description</th>
+                    <th class="col-sm-1">Reimbursement Author</th>
+                    <th class="col-sm-1">Reimbursement Resolver</th>
+                    <th class="col-sm-1">Reimbursement Status</th>
+                    <th class="col-sm-1">Reimbursement Type</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+               <!-- 
+                <input type="radio" id="approve" name="approve" value="approve">
+                <label for="approve">Approve</label>
+                <input type="radio" id="deny" name="deny" value="deny">
+                <label for="deny">Deny</label>
+               --> 
+
+            </tbody>
+        </table>
         <br>
         <div>
-            <label>View Completed Reimbursments:</label>
+            <br>
+            <br>
+            <h5>View Completed Reimbursments:</h5>
             <br>
             <label>Filter by:</label>
             <select name="filter" id="filter">
@@ -27,7 +53,26 @@
                 <option value="username">Username</option>
             </select>
             <input type="text" name="view">
-            <button id="view-filtered" onclick="viewFilterFunction()">View</button>
+            <button id="view-filtered" class="btn btn-light">View</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-sm-1">Reimbursement ID</th>
+                        <th class="col-sm-1">Reimbursement Amount</th>
+                        <th class="col-sm-1">Date Submitted</th>
+                        <th class="col-sm-1">Date Resolved</th>
+                        <th class="col-sm-4">Reimbursement Description</th>
+                        <th class="col-sm-1">Reimbursement Author</th>
+                        <th class="col-sm-1">Reimbursement Resolver</th>
+                        <th class="col-sm-1">Reimbursement Status</th>
+                        <th class="col-sm-1">Reimbursement Type</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                   
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

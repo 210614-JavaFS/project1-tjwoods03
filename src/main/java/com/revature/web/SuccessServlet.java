@@ -12,6 +12,9 @@
 //
 //import com.revature.models.User;
 //
+
+
+////NO LONGER USING THIS, TRYING TO USE FRONT CONTROLLER MODEL
 //public class SuccessServlet extends HttpServlet{
 //
 //	@Override

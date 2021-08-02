@@ -7,7 +7,9 @@
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 //import javax.servlet.http.HttpSession;
-//
+
+
+//NO LONGER USING THIS, TRYING TO USE FRONT CONTROLLER MODEL
 //public class LogoutServlet extends HttpServlet{
 //
 //	@Override

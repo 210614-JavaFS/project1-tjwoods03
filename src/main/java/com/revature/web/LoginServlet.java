@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.revature.controllers.UserController;
 import com.revature.models.User;
 
+//NO LONGER USING THIS, TRYING TO USE FRONT CONTROLLER MODEL
 public class LoginServlet extends HttpServlet{
 	
 //	

@@ -14,7 +14,9 @@
 //import com.revature.daos.UserDAO;
 //import com.revature.daos.UserDAOImpl;
 //import com.revature.models.User;
-//
+
+
+////NO LONGER USING THIS, TRYING TO USE FRONT CONTROLLER MODEL
 //public class RegisterServlet extends HttpServlet{
 //
 //	private static UserDAO userDao = new UserDAOImpl();

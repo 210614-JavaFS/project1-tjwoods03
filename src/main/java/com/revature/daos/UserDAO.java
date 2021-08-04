@@ -16,5 +16,7 @@ public interface UserDAO {
 	
 	int checkValidAccount(User user);
 
+	String login(User user);
+
 	
 }

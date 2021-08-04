@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.ReimbursementType;
 import com.revature.utils.ConnectionUtil;
 
 public class ReimbursementDAOImpl implements ReimbursementDAO{
@@ -48,72 +49,7 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 	}
 
 	@Override
-	public Reimbursement findReimbursementByID(int reimbID) {
-		try(Connection conn = ConnectionUtil.getConnection()){
-			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?;";
-			
-			PreparedStatement statement = conn.prepareStatement(sql);
-			
-			ResultSet result = statement.executeQuery();
-			
-			statement.setInt(1, reimbID);
-			
-			Reimbursement reimb = new Reimbursement();
-			
-			while(result.next()) {
-				reimb.setReimbursementID(result.getInt("reimb_id"));
-				reimb.setReimbursementAmount(result.getDouble("reimb_amount"));
-				reimb.setReimbursementSubmitted(result.getTimestamp("reimb_submitted"));
-				reimb.setReimbursementResolved(result.getTimestamp("reimb_resolbed"));
-				reimb.setReimburementDescription(result.getString("reimb_description"));
-				reimb.setReimbursementAuthor(result.getInt("reimb_author"));
-				reimb.setReimbursementResolver(result.getInt("reimb_resolver"));
-				reimb.setReimbursementStatusID(result.getInt("reimb_status_id"));
-				reimb.setReimbursementTypeID(result.getInt("reimb_type_id"));
-			}
-			
-			return reimb;
-			
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public Reimbursement findReimbursementByResolveDate(Timestamp resolve) {
-		try(Connection conn = ConnectionUtil.getConnection()){
-			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_resolved = ?;";
-			
-			PreparedStatement statement = conn.prepareStatement(sql);
-			
-			ResultSet result = statement.executeQuery();
-			
-			statement.setTimestamp(1, resolve);
-			
-			Reimbursement reimb = new Reimbursement();
-			
-			while(result.next()) {
-				reimb.setReimbursementID(result.getInt("reimb_id"));
-				reimb.setReimbursementAmount(result.getDouble("reimb_amount"));
-				reimb.setReimbursementSubmitted(result.getTimestamp("reimb_submitted"));
-				reimb.setReimbursementResolved(result.getTimestamp("reimb_resolbed"));
-				reimb.setReimburementDescription(result.getString("reimb_description"));
-				reimb.setReimbursementAuthor(result.getInt("reimb_author"));
-				reimb.setReimbursementResolver(result.getInt("reimb_resolver"));
-				reimb.setReimbursementStatusID(result.getInt("reimb_status_id"));
-				reimb.setReimbursementTypeID(result.getInt("reimb_type_id"));
-			}
-			
-			return reimb;
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public boolean addReimbursement(Reimbursement reimb) {
+	public boolean addReimbursement(Reimbursement reimb, String username) {
 		try(Connection conn = ConnectionUtil.getConnection()){
 			
 			String sql = "INSERT INTO ers_reimbursement(reimb_id, reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id)"
@@ -143,5 +79,38 @@ public class ReimbursementDAOImpl implements ReimbursementDAO{
 		return false;
 	}
 
+	
+	@Override
+	public List<Reimbursement> findReimbursement(String ers_username, boolean b) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	
+	@Override
+	public List<ReimbursementType> findReimbursementByType() {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			ArrayList<ReimbursementType> reimbT = new ArrayList<ReimbursementType>();
+			String sql = "SELECT * FROM ERS_REIMBURSMENT_TYPE";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet typeRS = statement.executeQuery();
+			try {
+				while (typeRS.next()) {
+					reimbT.add(new ReimbursementType(typeRS.getInt(1), typeRS.getString(2)));
+				}
+				return reimbT;
+			} catch (SQLException e) {
+				System.err.println("Select From Database Fail" + e.getMessage());
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

@@ -20,7 +20,7 @@ reimb_type_id integer NOT NULL REFERENCES ers_reimbursement_type(reimb_type_id)
 CREATE TABLE ers_users(
 ers_user_id SERIAL PRIMARY KEY,
 ers_username varchar(50) UNIQUE,
-ers_password varchar(50) NOT NULL,
+ers_password varchar(64) NOT NULL,
 user_first_name varchar(100) NOT NULL,
 user_last_name varchar(100) NOT NULL,
 user_email varchar(150) UNIQUE NOT NULL,
@@ -61,6 +61,9 @@ INSERT INTO ERS_USER_ROLES (ers_user_role_id, user_role)
 INSERT INTO ers_users(ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id)
  VALUES ('asdf', 'asdf', 'as', 'df', 'asdf@em.com', 1);
 
+INSERT INTO ers_users(ers_username, ers_password, user_first_name, user_last_name, user_email, user_role_id)
+ VALUES ('profoak', 'asdf', 'Professor', 'Oak', 'profoak@pokemail.com', 2);
+
 INSERT INTO ERS_REIMBURSEMENT (reimb_amount, reimb_description, reimb_author, reimb_status_id, reimb_type_id )
  VALUES (100, 'travel to town', 1, 1, 2);
 
@@ -68,4 +71,4 @@ INSERT INTO ERS_REIMBURSEMENT (reimb_amount, reimb_description, reimb_author, re
  VALUES (100, 'got hurt working hard', 1, 1, 3);
 
 INSERT INTO ERS_REIMBURSEMENT (reimb_amount, reimb_description, reimb_author, reimb_status_id, reimb_type_id )
- VALUES (2000, 'had to buy a new computer', 1, 1, 4);
+ VALUES (2000, 'had to buy some pokeballs', 1, 1, 4);

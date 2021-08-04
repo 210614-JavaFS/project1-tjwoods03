@@ -2,13 +2,11 @@ package com.revature.controllers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,70 +25,104 @@ public class UserController {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = new User();
-		
-		if(userService.login(user) == 1) {
-			HttpSession session = request.getSession();
-			session.setAttribute("username", user.getUserName());
+		User user = getJsonEmployee(request);
+		user = userService.login(user);
+		if (user != null) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("userName", user.getUserName());
+			session.setAttribute("userRoleID", user.getUserRoleID());
+			String json = objectMapper.writeValueAsString(user);
+			response.getWriter().print(json);
 			response.setStatus(201);
-		}else {
+		} else {
 			response.setStatus(406);
 		}
 		
 	}
 	
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		request.getSession().invalidate();
-		response.setStatus(404);
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+			session.invalidate();
+			response.setStatus(404);
+		}
 	}
 	
 	
 
-	public void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		BufferedReader reader = request.getReader();
+	public void addUser(HttpServletRequest request, HttpServletResponse response) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException{
+		User user = getJsonEmployee(request);
 		
-		StringBuilder stringBuilder = new StringBuilder();
-		
-		String line = reader.readLine();
-		
-		while(line != null) {
-			stringBuilder.append(line);
-			line = reader.readLine();
-		}
-		
-		String body = new String(stringBuilder);
-		
-		User user = objectMapper.readValue(body, User.class);
-		
-		
-		if(userService.addUser(user)) {
-			HttpSession session = request.getSession();
-			session.setAttribute("username", user.getUserName());
+		if (userService.addUser(user)) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("userName", user.getUserName());
+			session.setAttribute("userRoleID", "Employee");
 			response.setStatus(201);
-		}else {
+		} else {
 			response.setStatus(406);
 		}
 	}
 	
 	
-	//Implementing PBKDF2 to encrypt the password
-	public static String encryptPass(String pass) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	private User getJsonEmployee(HttpServletRequest request) {
+		String body;
 		
-		User user = new User();
-		pass = user.getPass();
+		try {
+			BufferedReader reader = request.getReader();
 		
+			StringBuilder stringBuilder = new StringBuilder();
 		
-		SecureRandom random = new SecureRandom();
-		byte[] salt = new byte[16];
-		random.nextBytes(salt);
+			String line = reader.readLine();
 		
-		KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt, 65536, 128);
-		//returns a  secret key factory that converts secret keys of the specified algorithm in this case its PBKDF2WithHmacSHA1
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			while (line != null) {
+				stringBuilder.append(line);
+				line = reader.readLine();
+			}
 		
-		byte[] hash = factory.generateSecret(spec).getEncoded();
+			body = new String(stringBuilder);
+			
+			return objectMapper.readValue(body, User.class);
+
+		} catch(IOException e) {
+			System.err.println("Readding Request Fail" + e.getMessage());
+		}
+
+		return null;
+	}
+
+	public static String encryptPass(String pass){
+		StringBuilder hexadecimalString = null;
+		byte[] byteArray;
 		
-		return hash.toString();
+		try {
+			//convert input string into a SHA encrypted byte array
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			byteArray = messageDigest.digest(pass.getBytes(StandardCharsets.UTF_8));
+			
+			//Now convert that byte array into hexadecimal
+			hexadecimalString = new StringBuilder(2 * byteArray.length);
+			for(byte i : byteArray) {
+				//Hex value of a byte
+				String hexValue = Integer.toHexString(0xff & i);
+				
+				//If the hex value is only a single digit, add a 0
+				if(hexValue.length() == 1) 
+					hexadecimalString.append('0');
+				
+				//Add the hex value to the entire string of hex values
+				hexadecimalString.append(hexValue);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		return hexadecimalString.toString();
+		
+	}
+
+	public boolean validatePassword(String pass, String password) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

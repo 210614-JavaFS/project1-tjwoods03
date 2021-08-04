@@ -1,6 +1,8 @@
 package com.revature.web;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,42 +18,67 @@ public class FrontControllerServlet extends HttpServlet{
 	ReimbursementController reimbController = new ReimbursementController();
 	
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		response.setContentType("application/json");
 		
 		response.setStatus(404);
 		
 		final String URL = request.getRequestURI().replace("/project1/", "");
-				
+		System.out.println(URL);
+		
 		String[] urlSections = URL.split("/");
 		
-		switch(urlSections[0]) {
+		if(request.getMethod().equals("POST")) {
+			switch(urlSections[0]) {
+			case "signUp":
+				try {
+					userController.addUser(request, response);
+				} catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
 			case "login":
-				if(request.getMethod().equals("POST")) {
-					userController.login(request, response);
-					request.getRequestURI().replace("/project1/", "/static/Project1-Employee.html");
-				}
-				break;
-			case "reimb":
 				if(urlSections.length == 1) {
-					if(request.getMethod().equals("GET")) {
-						reimbController.getAllReimbursements(response);
-					}else if(request.getMethod().equals("POST")) {
-						reimbController.addReimbursement(request, response);
-					}
-				}else if(urlSections.length == 2) {
-					//reimbController.getFilteredReimbursement(response, urlSections[1].toLowerCase());
+					userController.login(request, response);
 				}
 				break;
-			
+			case "signOut":
+				userController.logout(request, response);
+				break;
+			case "employee":
+				if(urlSections[1].equals("submit")) {
+					if(urlSections.length > 2) {
+						reimbController.getReimbursementType(request, response);
+					}else {
+						reimbController.submitRequest(request, response);
+					}
+				}else if(urlSections[1].equals("pending")) {
+					reimbController.pendingEmployeeRequest(request, response);
+				}else if(urlSections[1].equals("past")) {
+					reimbController.pastRequests(request,response);
+				}
+				break;
+			case "manager":
+				if(urlSections[1].equals("all")) {
+					reimbController.getAllReimbursements(request, response);
+				}else if(urlSections[1].equals("approve")) {
+					reimbController.approveReimbursement(request, response, urlSections[3]);
+				}else if(urlSections[1].equals("deny")) {
+					reimbController.denyReimbursement(request, response, urlSections[3]);
+				}else if(urlSections[1].equals("pending")) {
+					reimbController.pendingRequest(request, response, urlSections[3]);
+				}
+				break;
+			}
 		}
+		
 		
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		doPost(request, response);
 	}
 	
 }
